@@ -15,6 +15,7 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Component
 public class EmployeesService {
@@ -38,8 +39,8 @@ public class EmployeesService {
         employeesRepository.save(employee);
     }
 
-    public Employees getEmployee(Integer id) {
-        return employeesRepository.findById(id).get();
+    public Optional<Employees> getEmployeeById(Integer id) {
+        return employeesRepository.findById(id);
     }
 
     public void deleteEmployee (Integer id){

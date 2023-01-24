@@ -32,10 +32,14 @@ public class EmployeesController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@RequestBody Employees employee, @PathVariable Integer id) {
-        //apply mobile number existence check
-        try {
-            Employees existEmployee = employeesService.getEmployee(id);
+    public void update(@RequestBody Employees employee, @PathVariable Integer id) {
+
+        if(employeesService.getEmployeeById(id).isEmpty()){
+            System.out.println("No employee with this id exists");
+
+        }
+        else{
+            Employees existEmployee = employeesService.getEmployeeById(id).get();
             existEmployee.setId(id);
             existEmployee.setEmployeeName(employee.getEmployeeName());
             existEmployee.setEmployeeMobile(employee.getEmployeeMobile());
@@ -43,11 +47,8 @@ public class EmployeesController {
             existEmployee.setDateOfJoining(employee.getDateOfJoining());
             existEmployee.setEmployeeDesignation(employee.getEmployeeDesignation());
             employeesService.createEmployee(existEmployee);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (NoSuchElementException e) {
-            System.out.println("No employee with this id exists");
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+
     }
 
     @DeleteMapping("/{id}")
